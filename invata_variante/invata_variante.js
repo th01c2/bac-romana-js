@@ -1,7 +1,6 @@
-// --- COPIAZĂ AICI CONSTANTA rawLiteraryData ---
 const rawLiteraryData = [
     { opera: "Alexandru Lăpușneanul", author: "Constantin Negruzzi", category: "nuvelă istorică", period: "pașoptistă", year: 1840, currents: ["pașoptism", "romanticism"] },
-    { opera: "Povestea lui Harap Alb", author: "Ion Creangă", category: "basm cult", period: "realism cu elemente fantastice", year: 1877, currents: ["realism", "fantastic"] },
+    { opera: "Povestea lui Harap-Alb", author: "Ion Creangă", category: "basm cult", period: "realism cu elemente fantastice", year: 1877, currents: ["realism", "fantastic"] },
     { opera: "Moara cu noroc", author: "Ioan Slavici", category: "nuvelă psihologică", period: "realism", year: 1881, currents: ["realism", "psihologic"] },
     { opera: "Luceafărul", author: "Mihai Eminescu", category: "poem filozofic", period: "romantism", year: 1883, currents: ["romantism"] },
     { opera: "O scrisoare pierdută", author: "Ion Luca Caragiale", category: "comedie", period: "realism, clasicism (elemente)", year: 1884, currents: ["realism", "clasicism"] },
@@ -11,13 +10,12 @@ const rawLiteraryData = [
     { opera: "Riga Crypto și Lapona Enigel", author: "Ion Barbu", category: "baladă cultă", period: "modernism (ermetism)", year: 1924, currents: ["modernism", "ermetism"] },
     { opera: "Baltagul", author: "Mihail Sadoveanu", category: "roman mitic/realist", period: "realism cu elemente de baladă populară", year: 1930, currents: ["realism", "mitic", "tradiționalism"] },
     { opera: "Ultima noapte de dragoste, întâia noapte de război", author: "Camil Petrescu", category: "roman modern, psihologic", period: "modernism", year: 1930, currents: ["modernism", "psihologic", "subiectiv"] },
-    { opera: "Flori de mucegai", author: "Tudor Arghezi", category: "poem liric", period: "modernism (estetica urâtului)", year: 1931, currents: ["modernism", "estetica uratului"] },
+    { opera: "Testament", author: "Tudor Arghezi", category: "poem liric", period: "modernism (estetica urâtului)", year: 1931, currents: ["modernism", "estetica uratului"] },
     { opera: "Enigma Otiliei", author: "George Călinescu", category: "roman balzacian (realist)", period: "realism", year: 1938, currents: ["realism", "balzacian", "obiectiv"] },
     { opera: "Moromeții", author: "Marin Preda", category: "roman realist, realism social", period: "realism postbelic", year: 1955, currents: ["realism", "realism social", "postbelic"] },
     { opera: "Leoaică tânără, iubirea", author: "Nichita Stănescu", category: "poem neomodernist", period: "neomodernism", year: 1964, currents: ["neomodernism"] },
     { opera: "Iona", author: "Marin Sorescu", category: "dramă modernă", period: "neomodernism (teatrul absurdului)", year: 1968, currents: ["neomodernism", "teatrul absurdului", "parabolă"] }
 ];
-// ---------------------------------------------
 
 const allAuthors = [...new Set(rawLiteraryData.map(data => data.author))];
 const allOperas = [...new Set(rawLiteraryData.map(data => data.opera))];
@@ -64,7 +62,6 @@ function generateAllGameQuestions() {
     rawLiteraryData.forEach(item => {
         let wrongOptions;
 
-        // 1. Opera -> Autor
         wrongOptions = getUniqueRandomOptions(allAuthors, item.author, 3);
         if (wrongOptions.length === 3) {
             generatedQuestions.push({
@@ -74,7 +71,6 @@ function generateAllGameQuestions() {
             });
         }
 
-        // 2. Autor -> Operă
         wrongOptions = getUniqueRandomOptions(allOperas, item.opera, 3);
         if (wrongOptions.length === 3) {
             generatedQuestions.push({
@@ -84,7 +80,6 @@ function generateAllGameQuestions() {
             });
         }
 
-        // 3. Opera -> An
         if (item.year) {
             wrongOptions = getUniqueRandomOptions(allYears, String(item.year), 3);
             if (wrongOptions.length === 3) {
@@ -96,7 +91,6 @@ function generateAllGameQuestions() {
             }
         }
 
-        // 4. An -> Operă
         if (item.year) {
             wrongOptions = getUniqueRandomOptions(allOperas, item.opera, 3);
             if (wrongOptions.length === 3) {
@@ -108,7 +102,6 @@ function generateAllGameQuestions() {
             }
         }
 
-        // 5. Opera -> Perioada/Curent (folosind câmpul 'period')
          wrongOptions = getUniqueRandomOptions(allPeriods, item.period, 3);
          if (wrongOptions.length === 3) {
             generatedQuestions.push({
@@ -119,12 +112,9 @@ function generateAllGameQuestions() {
         }
     });
 
-    // Întrebare specifică: Nuvela pașoptistă
     if (pasoptisteNovellas.length > 0) {
         const correctPasoptista = shuffleArray([...pasoptisteNovellas])[0];
         let wrongOptionsForNovella = getUniqueRandomOptions(otherWorks, correctPasoptista, 3);
-
-        // Asigurăm că avem 3 opțiuni, chiar dacă trebuie să completăm din toate operele
         let attempts = 0;
         const allOtherOperas = allOperas.filter(op => op !== correctPasoptista);
         while(wrongOptionsForNovella.length < 3 && attempts < allOtherOperas.length * 2) {
@@ -134,7 +124,6 @@ function generateAllGameQuestions() {
             }
             attempts++;
         }
-
 
         if (wrongOptionsForNovella.length === 3) {
             generatedQuestions.push({
@@ -146,9 +135,6 @@ function generateAllGameQuestions() {
     }
 
     questions = shuffleArray(generatedQuestions);
-    if (questions.length === 0) {
-        console.error("Nu s-au putut genera întrebări pentru modul 'Învață pe Variante'. Verifică datele și logica de generare.");
-    }
 }
 
 function displayQuestion() {
@@ -219,12 +205,6 @@ function startGame() {
     quizScreen.classList.remove('hidden');
 
     generateAllGameQuestions();
-    if (questions.length === 0) {
-        questionText.textContent = "Eroare: Nu s-au putut încărca întrebările.";
-        optionsContainer.innerHTML = "";
-        feedbackMessage.textContent = "Încearcă să reîncarci pagina sau contactează administratorul.";
-        return;
-    }
     currentQuestionIndex = 0;
     correctScore = 0;
     incorrectScore = 0;
@@ -235,7 +215,7 @@ function startGame() {
 function endGame() {
     quizScreen.classList.add('hidden');
     gameOverScreen.classList.remove('hidden');
-    finalScoreMessage.innerHTML = `Scorul tău final: ${correctScore} corecte, ${incorrectScore} greșite din ${questions.length} întrebări.`;
+    finalScoreMessage.innerHTML = `Scor final: ${correctScore} corecte, ${incorrectScore} greșite din ${questions.length} întrebări.`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

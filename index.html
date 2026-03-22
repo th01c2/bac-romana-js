@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joc de Literatură Română - Meniu</title>
-    <!-- CSS-ul este în directorul părinte (root) -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Stiluri specifice pentru meniu, dacă e nevoie de diferențiere */
+        /* Stiluri specifice pentru meniu */
         .menu-container {
             display: flex;
             flex-direction: column;
@@ -21,19 +20,24 @@
             border: none;
             border-radius: 8px;
             padding: 20px 30px;
-            font-size: 1.2em; /* Ajustat pentru lizibilitate */
+            font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            width: 90%; /* Responsive width */
-            max-width: 350px; /* Lățime maximă pentru butoane */
-            box-sizing: border-box; /* Include padding-ul */
+            width: 90%; 
+            max-width: 350px;
+            box-sizing: border-box;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             text-align: center;
         }
         .menu-button:hover {
             background-color: #2980b9;
+        }
+        .game-container {
+            text-align: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
@@ -41,6 +45,7 @@
     <div class="game-container">
         <h1>Joc de Literatură Română</h1>
         <p>Alege modul de joc pentru a-ți testa și îmbunătăți cunoștințele:</p>
+        
         <div class="menu-container">
             <a href="invata_variante/invata_variante.html" class="menu-button">Învață pe Variante</a>
             <a href="invata_ani/invata_ani.html" class="menu-button">Învață Anii Operelor</a>
@@ -48,6 +53,8 @@
             <a href="invata_curente/invata_curente.html" class="menu-button">Învață Curentele Literare</a>
         </div>
     </div>
-    <!-- <script src="script_main.js"></script> -> Dacă va fi nevoie de JS specific pentru index.html -->
-</body>
+
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    </body>
 </html>
