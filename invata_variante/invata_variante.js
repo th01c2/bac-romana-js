@@ -17,12 +17,11 @@ const rawLiteraryData = [
     { opera: "Iona", author: "Marin Sorescu", category: "dramă modernă", period: "neomodernism (teatrul absurdului)", year: 1968, currents: ["neomodernism", "teatrul absurdului", "parabolă"] }
 ];
 
+// Helper to extract unique values for pools
 const allAuthors = [...new Set(rawLiteraryData.map(data => data.author))];
 const allOperas = [...new Set(rawLiteraryData.map(data => data.opera))];
 const allYears = [...new Set(rawLiteraryData.map(data => String(data.year)))];
 const allPeriods = [...new Set(rawLiteraryData.map(data => data.period))];
-const pasoptisteNovellas = rawLiteraryData.filter(data => data.period.toLowerCase().includes("pașoptist") && data.category.toLowerCase().includes("nuvelă")).map(data => data.opera);
-const otherWorks = rawLiteraryData.filter(data => !(data.period.toLowerCase().includes("pașoptist") && data.category.toLowerCase().includes("nuvelă"))).map(data => data.opera);
 
 let questions = [];
 let currentQuestionIndex = 0;
@@ -30,6 +29,7 @@ let correctScore = 0;
 let incorrectScore = 0;
 let timerId;
 
+// DOM Elements
 const startScreen = document.getElementById('start-screen');
 const quizScreen = document.getElementById('quiz-screen');
 const gameOverScreen = document.getElementById('game-over-screen');
@@ -50,8 +50,16 @@ function shuffleArray(array) {
     return array;
 }
 
-function getUniqueRandomOptions(pool, correctOption, numOptions) {
-    const filteredPool = pool.filter(opt => String(opt).trim().toLowerCase() !== String(correctOption).trim().toLowerCase());
+/**
+ * Updated to handle multiple "forbidden" values to avoid choosing 
+ * another correct answer as a wrong option.
+ */
+function getUniqueRandomOptions(pool, forbiddenValues, numOptions) {
+    const forbidden = Array.isArray(forbiddenValues) 
+        ? forbiddenValues.map(v => String(v).trim().toLowerCase()) 
+        : [String(forbiddenValues).trim().toLowerCase()];
+
+    const filteredPool = pool.filter(opt => !forbidden.includes(String(opt).trim().toLowerCase()));
     const shuffledPool = shuffleArray([...filteredPool]);
     return shuffledPool.slice(0, numOptions);
 }
@@ -62,6 +70,10 @@ function generateAllGameQuestions() {
     rawLiteraryData.forEach(item => {
         let wrongOptions;
 
+        // Q1: Who wrote X?
+        // Note: Some authors might have multiple works in the list.
+        const allWorksByThisAuthor = rawLiteraryData.filter(d => d.author === item.author).map(d => d.opera);
+        
         wrongOptions = getUniqueRandomOptions(allAuthors, item.author, 3);
         if (wrongOptions.length === 3) {
             generatedQuestions.push({
@@ -71,7 +83,8 @@ function generateAllGameQuestions() {
             });
         }
 
-        wrongOptions = getUniqueRandomOptions(allOperas, item.opera, 3);
+        // Q2: Which work belongs to Author?
+        wrongOptions = getUniqueRandomOptions(allOperas, allWorksByThisAuthor, 3);
         if (wrongOptions.length === 3) {
             generatedQuestions.push({
                 question: `Ce operă dintre următoarele îi aparține autorului "${item.author}"?`,
@@ -80,6 +93,7 @@ function generateAllGameQuestions() {
             });
         }
 
+        // Q3: Year Published
         if (item.year) {
             wrongOptions = getUniqueRandomOptions(allYears, String(item.year), 3);
             if (wrongOptions.length === 3) {
@@ -91,8 +105,11 @@ function generateAllGameQuestions() {
             }
         }
 
+        // Q4: What work was published in Year? (The "1930" Fix)
         if (item.year) {
-            wrongOptions = getUniqueRandomOptions(allOperas, item.opera, 3);
+            const allOperasInThisYear = rawLiteraryData.filter(d => d.year === item.year).map(d => d.opera);
+            wrongOptions = getUniqueRandomOptions(allOperas, allOperasInThisYear, 3);
+            
             if (wrongOptions.length === 3) {
                 generatedQuestions.push({
                     question: `Ce operă importantă a fost publicată în anul ${item.year}?`,
@@ -102,8 +119,9 @@ function generateAllGameQuestions() {
             }
         }
 
-         wrongOptions = getUniqueRandomOptions(allPeriods, item.period, 3);
-         if (wrongOptions.length === 3) {
+        // Q5: Period/Current
+        wrongOptions = getUniqueRandomOptions(allPeriods, item.period, 3);
+        if (wrongOptions.length === 3) {
             generatedQuestions.push({
                 question: `Ce curent/perioadă literară caracterizează opera "${item.opera}"?`,
                 correctAnswer: item.period,
@@ -111,28 +129,6 @@ function generateAllGameQuestions() {
             });
         }
     });
-
-    if (pasoptisteNovellas.length > 0) {
-        const correctPasoptista = shuffleArray([...pasoptisteNovellas])[0];
-        let wrongOptionsForNovella = getUniqueRandomOptions(otherWorks, correctPasoptista, 3);
-        let attempts = 0;
-        const allOtherOperas = allOperas.filter(op => op !== correctPasoptista);
-        while(wrongOptionsForNovella.length < 3 && attempts < allOtherOperas.length * 2) {
-            const randomOpera = allOtherOperas[Math.floor(Math.random() * allOtherOperas.length)];
-            if(!wrongOptionsForNovella.includes(randomOpera)) {
-                wrongOptionsForNovella.push(randomOpera);
-            }
-            attempts++;
-        }
-
-        if (wrongOptionsForNovella.length === 3) {
-            generatedQuestions.push({
-                question: `Care dintre următoarele este o nuvelă pașoptistă?`,
-                correctAnswer: correctPasoptista,
-                options: shuffleArray([correctPasoptista, ...wrongOptionsForNovella])
-            });
-        }
-    }
 
     questions = shuffleArray(generatedQuestions);
 }
@@ -200,9 +196,9 @@ function updateScoreDisplay() {
 }
 
 function startGame() {
-    startScreen.classList.add('hidden');
-    gameOverScreen.classList.add('hidden');
-    quizScreen.classList.remove('hidden');
+    if(startScreen) startScreen.classList.add('hidden');
+    if(gameOverScreen) gameOverScreen.classList.add('hidden');
+    if(quizScreen) quizScreen.classList.remove('hidden');
 
     generateAllGameQuestions();
     currentQuestionIndex = 0;
@@ -213,8 +209,8 @@ function startGame() {
 }
 
 function endGame() {
-    quizScreen.classList.add('hidden');
-    gameOverScreen.classList.remove('hidden');
+    if(quizScreen) quizScreen.classList.add('hidden');
+    if(gameOverScreen) gameOverScreen.classList.remove('hidden');
     finalScoreMessage.innerHTML = `Scor final: ${correctScore} corecte, ${incorrectScore} greșite din ${questions.length} întrebări.`;
 }
 
