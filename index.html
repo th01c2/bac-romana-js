@@ -3,58 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joc de Literatură Română - Meniu</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Joc Interactiv BAC - Literatură Română</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* Stiluri specifice pentru meniu */
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        .game-container {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 95%;
+            max-width: 450px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.8em;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            font-style: italic;
+        }
         .menu-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
-            margin-top: 30px;
         }
         .menu-button {
             background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 20px 30px;
-            font-size: 1.2em;
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-size: 1.05em;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.25s ease;
             text-decoration: none;
-            display: inline-block;
-            width: 90%; 
-            max-width: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            width: 100%; 
             box-sizing: border-box;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+        }
+        .menu-button i {
+            width: 25px;
             text-align: center;
         }
         .menu-button:hover {
             background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
         }
-        .game-container {
-            text-align: center;
-            padding: 20px;
-            font-family: Arial, sans-serif;
+        
+        /* Secțiunea Instagram Centrată */
+        .social-footer {
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+            display: flex;
+            justify-content: center; /* Centrează iconița orizontal */
+            align-items: center;
+        }
+        .instagram-link {
+            color: #e1306c;
+            text-decoration: none;
+            transition: transform 0.2s ease, color 0.2s ease;
+            display: inline-block;
+        }
+        .instagram-link i {
+            font-size: 2.5em; /* Iconița este acum mai mare */
+        }
+        .instagram-link:hover {
+            transform: scale(1.15); /* Efect de mărire la hover */
+            color: #bc2a8d; /* Schimbare ușoară de nuanță */
         }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <h1>Joc de Literatură Română</h1>
-        <p>Alege modul de joc pentru a-ți testa și îmbunătăți cunoștințele:</p>
+        <i class="fa-solid fa-graduation-cap" style="font-size: 3em; color: #3498db; margin-bottom: 15px;"></i>
+        <h1>Joc Interactiv BAC</h1>
+        <p class="subtitle">Atenție, website-ul acesta rulează cu speranță</p>
         
         <div class="menu-container">
-            <a href="invata_variante/invata_variante.html" class="menu-button">Învață pe Variante</a>
-            <a href="invata_ani/invata_ani.html" class="menu-button">Învață Anii Operelor</a>
-            <a href="invata_autori/invata_autori.html" class="menu-button">Învață Autorii Operelor</a>
-            <a href="invata_curente/invata_curente.html" class="menu-button">Învață Curentele Literare</a>
+            <a href="invata_variante/invata_variante.html" class="menu-button">
+                <i class="fa-solid fa-layer-group"></i> Învață pe Variante
+            </a>
+            <a href="invata_ani/invata_ani.html" class="menu-button">
+                <i class="fa-solid fa-calendar-days"></i> Învață Anii Operelor
+            </a>
+            <a href="invata_autori/invata_autori.html" class="menu-button">
+                <i class="fa-solid fa-pen-nib"></i> Învață Autorii Operelor
+            </a>
+            <a href="invata_curente/invata_curente.html" class="menu-button">
+                <i class="fa-solid fa-book-open"></i> Învață Curentele Literare
+            </a>
+        </div>
+
+        <div class="social-footer">
+            <a href="https://www.instagram.com/sebastian.webp/" target="_blank" class="instagram-link" title="Instagram Sebastian">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
         </div>
     </div>
 
     <script defer src="/_vercel/insights/script.js"></script>
-
-    </body>
+</body>
 </html>

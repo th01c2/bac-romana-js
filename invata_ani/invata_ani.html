@@ -4,39 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Învață Anii Operelor - Literatură</title>
-    <link rel="stylesheet" href="../style.css"> <!-- CSS din directorul părinte -->
+    <link rel="stylesheet" href="../style.css"> 
+    <style>
+        /* Centrare globală pentru containerul de joc */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 80vh;
+        }
+
+        .quiz-header {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Stiluri pentru secțiunea de input și butoane */
+        #answer-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        #answer-input {
+            padding: 12px;
+            font-size: 1.1em;
+            text-align: center; /* Centrează textul în interiorul input-ului */
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Centrare scor și mesaje */
+        #score-container, #feedback-message, #question-text {
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
         <div class="quiz-header">
-            <a href="../index.html" class="back-button">« Meniu</a>
+            <a href="../index.html" class="back-button" style="text-decoration: none; display: block; margin-bottom: 10px;">« Meniu</a>
             <h1>Învață Anii Operelor</h1>
         </div>
 
         <div id="start-screen">
-            <p>Scrie anul corect de publicare pentru opera dată. Dacă nu știi, poți apăsa "Mă dau bătut".</p>
-            <button id="start-button">START</button>
+            <p>Scrie anul corect de publicare pentru opera dată. <br> Dacă nu știi, poți apăsa "Mă dau bătut".</p>
+            <button id="start-button" style="background-color: #3498db; color: white; font-size: 1.1em; padding: 15px 40px;">START</button>
         </div>
 
         <div id="quiz-screen" class="hidden">
             <div id="score-container">
-                <span>Corecte: <span id="correct-score">0</span></span> |
-                <span>Greșite: <span id="incorrect-score">0</span></span>
+                <strong>Corecte: <span id="correct-score" style="color: #2ecc71;">0</span></strong> |
+                <strong>Greșite: <span id="incorrect-score" style="color: #e74c3c;">0</span></strong>
             </div>
-            <div id="question-text"></div>
+            <div id="question-text" style="font-weight: bold; font-size: 1.4em;"></div>
+            
             <div id="answer-section">
-                <input type="text" id="answer-input" placeholder="Scrie anul aici (ex: 1840)...">
-                <button id="submit-answer-button">Trimite</button>
-                <button id="give-up-button">Mă dau bătut</button>
+                <input type="number" id="answer-input" placeholder="Anul (ex: 1840)...">
+                <div style="display: flex; gap: 10px;">
+                    <button id="submit-answer-button" style="background-color: #2ecc71; color: white;">Trimite</button>
+                    <button id="give-up-button" style="background-color: #95a5a6; color: white;">Mă dau bătut</button>
+                </div>
             </div>
             <div id="feedback-message"></div>
         </div>
 
         <div id="game-over-screen" class="hidden">
-            <p>Jocul s-a terminat!</p>
-            <div id="final-score-message"></div>
-            <button id="restart-button">Joacă din nou</button>
-            <a href="../index.html" class="back-to-menu-button">Înapoi la Meniu</a>
+            <h2>Jocul s-a terminat!</h2>
+            <div id="final-score-message" style="margin-bottom: 20px;"></div>
+            <button id="restart-button" style="background-color: #3498db; color: white; margin-bottom: 10px;">Joacă din nou</button>
+            <br>
+            <a href="../index.html" class="back-to-menu-button" style="text-decoration: none; color: #7f8c8d;">Înapoi la Meniu</a>
         </div>
     </div>
 
